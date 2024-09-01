@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Movie Database</string>
+    <string name="movie_poster">movie poster</string>
+    <string name="upcoming_movie">Upcoming movie</string>
+    <string name="trending_right_now">Trending right now</string>
+    <string name="in_theaters">In Theaters</string>
+    <string name="on_tv">On Tv</string>
+    <string name="poster">Poster</string>
+    <string name="trailer">Trailer</string>
+    <string name="retry">Retry</string>
+    <string name="error_image">error image</string>
+    <string name="search">Search</string>
+    <string name="back_drop">back_drop</string>
+    <string name="back_button">back_button</string>
+    <string name="title">Title</string>
+    <string name="overview">Overview</string>
+    <string name="sample_overview">A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade must reluctantly suit-up again with an even more reluctant Wolverine.</string>
+</resources>
