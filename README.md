@@ -17,7 +17,7 @@ Movie Database is a fully functional Android app built entirely with Kotlin and 
 - Paging3: pagination load data from network
 - Youtube player: for load movie and tv series trailer
 - Di: Hilt
-- Coroutines
+- Kotlin Coroutines: Asynchronous computation
 
 Architecture
 This project follows the MVVM architecture pattern:
