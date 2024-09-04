@@ -39,5 +39,5 @@ Code Structure
 - adapter: Recycler view adapter
 - db: Room database
 
-<img src="https://github.com/user-attachments/assets/e380e5e0-f13b-431f-8546-f8412c80d448" width="200" height="400">  <img src="https://github.com/user-attachments/assets/5be53e68-7911-4034-a003-b75e94733a64" width="200" height="400">  <img src="https://github.com/user-attachments/assets/c4c9f421-50d8-403f-9345-a6bd4ab0b94c" width="200" height="400">
+<img src="https://github.com/user-attachments/assets/e380e5e0-f13b-431f-8546-f8412c80d448" width="200" height="430">  <img src="https://github.com/user-attachments/assets/5be53e68-7911-4034-a003-b75e94733a64" width="200" height="430">  <img src="https://github.com/user-attachments/assets/c4c9f421-50d8-403f-9345-a6bd4ab0b94c" width="200" height="430">
 
