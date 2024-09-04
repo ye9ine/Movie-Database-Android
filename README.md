@@ -9,7 +9,7 @@ Movie Database is a fully functional Android app built entirely with Kotlin and 
 - LiveData: Observable data holder class.
 - ViewModel: Manage UI-related data in a lifecycle-conscious way.
 - Kotlin
-- Room: For offine caching
+- Room: For offline caching
 - Glide: For Network image and cache
 - Retrofit: For http request
 - OkHttp3: implementing interceptor, logging
@@ -30,7 +30,7 @@ This project follows the MVVM architecture pattern:
 
 Code Structure
 - model: Contains data models.
-- respository: Contains repository classes.
+- repository: Contains repository classes.
 - dao: Contains data access object for room.
 - view: Contains UI components built with Jetpack Compose.
 - viewmodel: Contains ViewModel classes.
