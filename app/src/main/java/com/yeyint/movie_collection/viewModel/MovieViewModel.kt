@@ -1,5 +1,6 @@
 package com.yeyint.movie_collection.viewModel
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.*
 import com.yeyint.movie_collection.helper.MovieConstant
@@ -41,13 +42,25 @@ class MovieViewModel @Inject constructor(
         movieRepositoryImpl.getTv()
     }.flow.cachedIn(viewModelScope)
 
-    val searchMovieList = Pager(PagingConfig(pageSize = 10)) {
+    var searchMovieList = Pager(PagingConfig(pageSize = 10)) {
         movieRepositoryImpl.searchMovie(searchKey.value!!)
     }.flow.cachedIn(viewModelScope)
 
-    val searchTvList = Pager(PagingConfig(pageSize = 10)) {
+    var searchTvList = Pager(PagingConfig(pageSize = 10)) {
         movieRepositoryImpl.searchTv(searchKey.value!!)
     }.flow.cachedIn(viewModelScope)
+
+    fun searchMovie(){
+        searchMovieList = Pager(PagingConfig(pageSize = 10)) {
+            movieRepositoryImpl.searchMovie(searchKey.value!!)
+        }.flow.cachedIn(viewModelScope)
+    }
+
+    fun searchTv(){
+        searchTvList = Pager(PagingConfig(pageSize = 10)) {
+            movieRepositoryImpl.searchTv(searchKey.value!!)
+        }.flow.cachedIn(viewModelScope)
+    }
 
     private fun getUpcomingMovie() {
         viewModelScope.launch {
@@ -134,8 +147,6 @@ class MovieViewModel @Inject constructor(
                 }
 
             }
-
-
         }
     }
 }

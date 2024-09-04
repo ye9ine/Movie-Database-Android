@@ -120,7 +120,6 @@ class MoviePosterHeaderAdapter(private val moviePosterHeaderAdapterListener: Mov
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val moviePosterModel: MoviePosterHeaderBinding = this.list[position]
         holder.bind()
     }
 

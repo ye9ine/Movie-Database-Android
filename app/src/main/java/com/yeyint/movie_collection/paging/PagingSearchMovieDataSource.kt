@@ -25,6 +25,9 @@ class PagingSearchMovieDataSource(
             val responseData = mutableListOf<MovieModel>()
             val data = response.body()?.results ?: emptyList()
             responseData.addAll(data)
+            responseData.map {
+                it.type = MovieConstant.movie
+            }
 
             val nextKey = if (responseData.isEmpty()) null else currentLoadingPageKey + 1
 

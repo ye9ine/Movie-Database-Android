@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
@@ -16,6 +18,8 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.yeyint.movie_collection.R
@@ -28,7 +32,7 @@ import com.yeyint.movie_collection.helper.MovieConstant
 import com.yeyint.movie_collection.model.MovieModel
 import com.yeyint.movie_collection.viewModel.UpcomingMovieState
 import com.yeyint.movie_collection.viewModel.MovieViewModel
-import com.yeyint.movie_collection.viewModel.`SplashViewModel.kt`
+import com.yeyint.movie_collection.viewModel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -37,7 +41,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
     ViewPager.OnPageChangeListener, MoviePosterHeaderAdapterListener {
 
-    private val viewModel: `SplashViewModel.kt` by viewModels()
+    private val viewModel: SplashViewModel by viewModels()
     private val movieViewModel: MovieViewModel by viewModels()
     private lateinit var mainBinding: ActivityMainBinding
 
@@ -45,6 +49,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
     private lateinit var moviePosterHeaderAdapter: MoviePosterHeaderAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var movieType = MovieConstant.movie
+    private var scrollPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,11 +87,33 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
                 movieListAdapter.retry()
             }
 
+            flbArrow.setOnClickListener {
+                recyclerView.smoothScrollToPosition(0)
+            }
+
+
             //init recycler view
             recyclerView.apply {
                 layoutManager = linearLayoutManager
                 setHasFixedSize(true)
                 adapter = concatAdapter
+                addOnScrollListener(object: OnScrollListener(){
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        scrollPosition += dy
+                        if(scrollPosition > 1500){
+                            flbArrow.visibility = View.VISIBLE
+                        }else{
+                            flbArrow.visibility = View.GONE
+                        }
+                        Log.d("onScrolled", "onScrolled: $scrollPosition $dy")
+                    }
+
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        Log.d("onScrollStateChanged", "onScrollStateChanged: ")
+                    }
+                })
             }
         }
 
@@ -151,6 +178,8 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     }
 
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         val search = menu?.findItem(R.id.appSearchBar)
@@ -166,10 +195,14 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
                 lifecycleScope.launch {
                     if(movieType == MovieConstant.movie){
+                        movieViewModel.searchMovie()
+
                         movieViewModel.searchMovieList.collect{
                             movieListAdapter.submitData(it)
                         }
                     }else{
+                        movieViewModel.searchTv()
+
                         movieViewModel.searchTvList.collect{
                             movieListAdapter.submitData(it)
                         }
@@ -187,6 +220,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
         searchView.setOnCloseListener {
 
             searchView.queryHint = ""
+            movieViewModel.searchKey.value = ""
 
             lifecycleScope.launch{
                 if(movieType == MovieConstant.movie){
@@ -240,8 +274,15 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
                     movieListAdapter.submitData(PagingData.empty())
 
-                    movieViewModel.movieList.collect{
-                        movieListAdapter.submitData(it)
+                    if(movieViewModel.searchKey.value!!.isEmpty()){
+                        movieViewModel.movieList.collect{
+                            movieListAdapter.submitData(it)
+                        }
+                    }else{
+                        movieViewModel.searchMovie()
+                        movieViewModel.searchMovieList.collect{
+                            movieListAdapter.submitData(it)
+                        }
                     }
 
                 }
@@ -251,9 +292,18 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
                     movieListAdapter.submitData(PagingData.empty())
 
-                    movieViewModel.tvSeriesList.collect{
-                        movieListAdapter.submitData(it)
+                    if(movieViewModel.searchKey.value!!.isEmpty()){
+                        movieViewModel.tvSeriesList.collect{
+                            movieListAdapter.submitData(it)
+                        }
+                    }else{
+                        movieViewModel.searchTv()
+                        movieViewModel.searchTvList.collect{
+                            movieListAdapter.submitData(it)
+                        }
                     }
+
+
 
                 }
             }

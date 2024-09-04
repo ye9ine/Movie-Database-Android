@@ -58,6 +58,18 @@
             layout="@layout/retry_button_item"
             android:visibility="gone"/>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/flb_arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/scroll_to_top"
+            android:src="@mipmap/back_arrow"
+            app:backgroundTint="@color/primaryColor"
+            android:rotation="90"/>
+
     </RelativeLayout>
 
 
